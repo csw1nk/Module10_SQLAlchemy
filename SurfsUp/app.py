@@ -85,9 +85,10 @@ def tobs():
         filter(Measurement.station == most_active_station_id).\
         filter(Measurement.date >= one_year_ago).all()
     session.close()
+    tobs_data = [{"date": result[0], "tobs": result[1]} for result in results]
+    
+    return jsonify({"station": most_active_station_id, "tobs": tobs_data})
 
-    tobs_list = list(np.ravel(results))
-    return jsonify(tobs=tobs_list)
 
 @app.route("/api/v1.0/<start>")
 @app.route("/api/v1.0/<start>/<end>")
